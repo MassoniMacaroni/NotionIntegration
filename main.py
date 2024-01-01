@@ -411,7 +411,7 @@ def categorise_primary_type(primary_type):
     }
 
     # Return the category for the given primary type
-    return category_mapping.get(primary_type, "TypeNotFound")
+    return category_mapping.get(primary_type, "Activity")
 
 # Function to add a page to Notion
 def add_page_to_notion(page_details):
