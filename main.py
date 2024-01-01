@@ -80,7 +80,7 @@ def extract_details_from_google_maps(google_maps_url):
     return place_name, latitude, longitude, regularOpeningHours, websiteUri, primary_type
 
 def get_country_from_lat_long(latitude, longitude):
-     # Construct the URL for the Geocoding API
+    # Construct the URL for the Geocoding API
     url = f"https://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&key={gmaps_api_key}&language=en"
 
     # Make the request
@@ -90,21 +90,27 @@ def get_country_from_lat_long(latitude, longitude):
         results = response.json().get('results', [])
         country = None
         localities = set()
+        administrative_areas = set()
 
-        # Iterate through results to find the country and localities
+        # Iterate through results to find the country, localities, and administrative areas
         for result in results:
             for component in result.get('address_components', []):
                 if 'country' in component.get('types', []):
                     country = component.get('long_name')
                 if 'locality' in component.get('types', []):
                     localities.add(component.get('long_name'))
+                if 'administrative_area_level_2' in component.get('types', []):
+                    administrative_areas.add(component.get('long_name'))
 
-        # Check if only one unique locality is found
-        print(localities)
-        if len(localities) == 1:
-            return country, list(localities)[0]
-        else:
+        # Determine which value to return based on availability
+        print("Localities:", localities)
+        print("Administrative Areas:", administrative_areas)
+        if localities:
             return country, list(localities)
+        elif administrative_areas:
+            return country, list(administrative_areas)
+        else:
+            return country, []
     else:
         return f"Error: {response.status_code}", "Error in response"
 
@@ -196,10 +202,7 @@ def search_localities_in_notion(localities, database_id):
     print("No matching page found for any of the localities.")
     return None
 
-def create_page_details(place_name, latitude, longitude, country_page_id, locality_page_id, time_of_day, closed_days, websiteUri, category):
-    # Example structure. Modify this according to your Notion database's schema.
-    
-    
+def create_thingsToDo_page_details(place_name, latitude, longitude, country_page_id, locality_page_id, time_of_day, closed_days, websiteUri, category):
     page_details = {
         "parent": {"database_id": "07cc7511-85a0-49ff-8473-e5470ec595a8"},  # Replace with your database ID
         "properties": {
@@ -251,46 +254,70 @@ def create_page_details(place_name, latitude, longitude, country_page_id, locali
     }
     return page_details
 
-def analyze_opening_hours(data):
-    # Define the names of the days for reference
-    days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+def create_countries_page_details(country_name):
+    page_details = {
+        "parent": {"database_id": "5270d10c-a5b0-4bbe-9e76-c69e7d2e64c4"},
+        "properties": {
+            "Name": {
+                "title": [
+                    {"text": {"content": country_name}}
+                ]
+            },
+            # Add other properties as needed
+        },
+        # Optional: Add icon, cover, and children (blocks) as needed
+    }
+    return page_details
 
-    # Initialize variables
+def create_cities_page_details(city_name, country_page_id):
+    page_details = {
+        "parent": {"database_id": "2fc9cb63-163b-40d5-b41d-c8f17fa4c9e2"},
+        "properties": {
+            "Name": {
+                "title": [
+                    {"text": {"content": city_name}}
+                ]
+            },
+            "Countries": {
+                "relation": [
+                    {"id": country_page_id}
+                ]
+            },
+            # Add other properties as needed
+        },
+        # Optional: Add icon, cover, and children (blocks) as needed
+    }
+    return page_details
+
+def analyze_opening_hours(data):
+    days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     closed_days = []
     suitable_for_day = False
     suitable_for_night = False
     open_24_7 = False
 
-    # Check if data is None
-    if data is None:
-        return closed_days, [""]
-    
-    # Check if open 24/7
-    if 'open24Hours' in data and data['open24Hours']:
+    if data is None or 'open24Hours' in data and data['open24Hours']:
         open_24_7 = True
     else:
-        # Create a dictionary to map days to their open/close times
-        periods_dict = {period['open']['day']: period for period in data.get('periods', [])}
+        # Check each period for each day
+        for day in range(7):  # 0 to 6 for each day of the week
+            periods_for_day = [period for period in data.get('periods', []) if period['open']['day'] == day]
 
-        for day, day_name in enumerate(days_of_week):
-            description = data.get('weekdayDescriptions', [])[day]
-
-            # Check if the day is closed
-            if 'Closed' in description:
-                closed_days.append(day_name)
+            if not periods_for_day:  # If no periods, the day is closed
+                closed_days.append(days_of_week[day])
                 continue
 
-            # Check if the day's data is available
-            if day in periods_dict:
-                period = periods_dict[day]
+            for period in periods_for_day:
+                open_hour = period['open']['hour']
+                close_hour = period.get('close', {}).get('hour', 24)  # Default to 24 if closing time is not specified
 
-                # Check if open for day or night or both
-                if period['open']['hour'] < 12:
+                # Check for day and night suitability
+                if open_hour < 12:
                     suitable_for_day = True
-                if 'close' in period and period['close']['hour'] >= 21:
+                if close_hour >= 21 or close_hour == 0:  # Midnight closing is represented as 0
                     suitable_for_night = True
 
-    # Determine suitability
+    # Determine time of day suitability
     if open_24_7:
         time_of_day = ["Day", "Night"]
     elif suitable_for_day and suitable_for_night:
@@ -303,6 +330,7 @@ def analyze_opening_hours(data):
         time_of_day = []
 
     return closed_days, time_of_day
+
 
 
 def categorise_primary_type(primary_type):
@@ -387,8 +415,6 @@ def categorise_primary_type(primary_type):
 
 # Function to add a page to Notion
 def add_page_to_notion(page_details):
-    database_id = "07cc7511-85a0-49ff-8473-e5470ec595a8"
-  
     # Notion API URL to create a new page
     url = 'https://api.notion.com/v1/pages'
 
@@ -404,7 +430,10 @@ def add_page_to_notion(page_details):
 
     # Check the response
     if response.status_code == 200:
-        print("New page created successfully:", response.json())
+        response_data = response.json()
+        page_id = response_data.get('id')
+        print("New page created successfully with ID:", page_id)
+        return page_id  # Return the page ID
     else:
         print("Failed to create page:", response.status_code, response.text)
 
@@ -413,8 +442,10 @@ def run_script():
     if google_maps_url:
         main(google_maps_url)
         messagebox.showinfo("Success", "The script has been executed successfully.")
+        url_entry.delete(0, tk.END)  # Clear the entry box
     else:
         messagebox.showwarning("Warning", "Please enter a Google Maps URL.")
+
 
 
 # Main script flow
@@ -423,39 +454,43 @@ def main(google_maps_url):
 
     # Extract details from Google Maps
     place_name, latitude, longitude, regularOpeningHours, websiteUri, primary_type = extract_details_from_google_maps(google_maps_url)
-
-    # Categorise the primary type
     category = categorise_primary_type(primary_type)
 
-    # Get the country from the latitude and longitude
     print("Latitude:", latitude)
     print("Longitude:", longitude)
     country_name, localities = get_country_from_lat_long(latitude, longitude)
-    # Search for the country in Notion and get the page ID
+
     countries_database = '5270d10c-a5b0-4bbe-9e76-c69e7d2e64c4'
     cities_database = '2fc9cb63-163b-40d5-b41d-c8f17fa4c9e2'
-    
+
+    # Search for the country in Notion, create if not found
     country_page_id = search_page_in_notion(country_name, countries_database)
-    print("Country Page ID:", country_page_id)
-    locality_page_id = search_localities_in_notion(localities, cities_database)
-    print("Locality Page ID:", locality_page_id)
-    
+    if not country_page_id:
+        print("Creating new Country Page:", country_name)
+        page_details = create_countries_page_details(country_name)
+        country_page_id = add_page_to_notion(page_details)
+
+    # Check and handle localities (cities)
+    locality_page_id = None
+    for locality in localities:
+        locality_page_id = search_page_in_notion(locality, cities_database)
+        if locality_page_id:
+            break
+
+    if not locality_page_id and localities:
+        print("Creating new City Page:", localities[0])
+        country_page_id = search_page_in_notion(country_name, countries_database)
+        page_details = create_cities_page_details(localities[0], country_page_id)
+        locality_page_id = add_page_to_notion(page_details)
+
     closed_days, time_of_day = analyze_opening_hours(regularOpeningHours)
 
-    if country_page_id:
-        # Prepare details for the new Notion page
-        page_details = create_page_details(place_name, latitude, longitude, country_page_id, locality_page_id,time_of_day, closed_days, websiteUri, category)
-
-        # Add a new page to Notion
+    # Prepare and add the thingsToDo page
+    if country_page_id and locality_page_id:
+        page_details = create_thingsToDo_page_details(place_name, latitude, longitude, country_page_id, locality_page_id, time_of_day, closed_days, websiteUri, category)
         add_page_to_notion(page_details)
     else:
-        print("Unable to find the country page ID in Notion.")
-
-    if locality_page_id:
-        print(f"Found matching page ID: {locality_page_id}")
-    else:
-        # Call or define your function to create a new page here
-        print("Proceeding to create a new page...")
+        print("Failed to find or create necessary pages in Notion.")
 
     print("Process completed successfully.")
 

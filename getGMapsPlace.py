@@ -2,7 +2,7 @@ import re
 import requests
 
 # Prompt the user for a Google Maps URL
-google_maps_url = "https://www.google.com/maps/place/Smart+Hotel+Napoli/@40.8608561,14.2142044,13z/data=!4m13!1m2!2m1!1snaples+accommodation!3m9!1s0x133b08491595d0c7:0x74339c102b9a6ade!5m2!4m1!1i2!8m2!3d40.8386979!4d14.2580931!15sChRuYXBsZXMgYWNjb21tb2RhdGlvbpIBBWhvdGVs4AEA!16s%2Fg%2F11hyfwqlsn?entry=ttu"
+google_maps_url = "https://www.google.com/maps/place/Mama+Eat/@40.8366911,14.2131827,15z/data=!4m6!3m5!1s0x133b09205fc705bd:0xb27f043e82c18803!8m2!3d40.8366911!4d14.2131827!16s%2Fg%2F1tqd2_zv?entry=ttu"
 #input("Please enter a Google Maps URL: ")
 
 #Endpoint
@@ -109,45 +109,34 @@ def get_location_details_from_lat_long(latitude, longitude, api_key):
 
 
 def analyze_opening_hours(data):
-    # Define the names of the days for reference
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-
-    # Initialize variables
     closed_days = []
     suitable_for_day = False
     suitable_for_night = False
     open_24_7 = False
 
-    # Check if data is None
-    if data is None:
-        return closed_days, [""]
-    
-    # Check if open 24/7
-    if 'open24Hours' in data and data['open24Hours']:
+    if data is None or 'open24Hours' in data and data['open24Hours']:
         open_24_7 = True
     else:
-        # Create a dictionary to map days to their open/close times
-        periods_dict = {period['open']['day']: period for period in data.get('periods', [])}
+        # Check each period for each day
+        for day in range(7):  # 0 to 6 for each day of the week
+            periods_for_day = [period for period in data.get('periods', []) if period['open']['day'] == day]
 
-        for day, day_name in enumerate(days_of_week):
-            description = data.get('weekdayDescriptions', [])[day]
-
-            # Check if the day is closed
-            if 'Closed' in description:
-                closed_days.append(day_name)
+            if not periods_for_day:  # If no periods, the day is closed
+                closed_days.append(days_of_week[day])
                 continue
 
-            # Check if the day's data is available
-            if day in periods_dict:
-                period = periods_dict[day]
+            for period in periods_for_day:
+                open_hour = period['open']['hour']
+                close_hour = period.get('close', {}).get('hour', 24)  # Default to 24 if closing time is not specified
 
-                # Check if open for day or night or both
-                if period['open']['hour'] < 12:
+                # Check for day and night suitability
+                if open_hour < 12:
                     suitable_for_day = True
-                if 'close' in period and period['close']['hour'] >= 21:
+                if close_hour >= 21 or close_hour == 0:  # Midnight closing is represented as 0
                     suitable_for_night = True
 
-    # Determine suitability
+    # Determine time of day suitability
     if open_24_7:
         time_of_day = ["Day", "Night"]
     elif suitable_for_day and suitable_for_night:
@@ -160,6 +149,7 @@ def analyze_opening_hours(data):
         time_of_day = []
 
     return closed_days, time_of_day
+
 
 def categorize_primary_type(primary_type):
     # Mapping of primary types to categories
