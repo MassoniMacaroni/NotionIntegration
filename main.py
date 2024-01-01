@@ -12,8 +12,6 @@ gmaps_api_key = 'AIzaSyDHlT4doSbP1o_gHmaqrbXTr-PkcpBSr34'
 
 # Function to extract details from a Google Maps link
 def extract_details_from_google_maps(google_maps_url):
-    # ... your existing code for extracting details ...
-    #Endpoint
     url = 'https://places.googleapis.com/v1/places:searchText'
 
     # Regular expression patterns to extract the place name, latitude and longitude
@@ -200,6 +198,8 @@ def search_localities_in_notion(localities, database_id):
 
 def create_page_details(place_name, latitude, longitude, country_page_id, locality_page_id, time_of_day, closed_days, websiteUri, category):
     # Example structure. Modify this according to your Notion database's schema.
+    
+    
     page_details = {
         "parent": {"database_id": "07cc7511-85a0-49ff-8473-e5470ec595a8"},  # Replace with your database ID
         "properties": {
@@ -261,6 +261,10 @@ def analyze_opening_hours(data):
     suitable_for_night = False
     open_24_7 = False
 
+    # Check if data is None
+    if data is None:
+        return closed_days, [""]
+    
     # Check if open 24/7
     if 'open24Hours' in data and data['open24Hours']:
         open_24_7 = True
@@ -269,7 +273,7 @@ def analyze_opening_hours(data):
         periods_dict = {period['open']['day']: period for period in data.get('periods', [])}
 
         for day, day_name in enumerate(days_of_week):
-            description = data['weekdayDescriptions'][day]
+            description = data.get('weekdayDescriptions', [])[day]
 
             # Check if the day is closed
             if 'Closed' in description:
@@ -299,6 +303,7 @@ def analyze_opening_hours(data):
         time_of_day = []
 
     return closed_days, time_of_day
+
 
 def categorise_primary_type(primary_type):
     # Mapping of primary types to categories
