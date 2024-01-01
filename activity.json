@@ -1,0 +1,260 @@
+{
+    "object": "list",
+    "results": [
+        {
+            "object": "database",
+            "id": "07cc7511-85a0-49ff-8473-e5470ec595a8",
+            "cover": {
+                "type": "external",
+                "external": {
+                    "url": "https://www.notion.so/images/page-cover/rijksmuseum_mignons_1660.jpg"
+                }
+            },
+            "icon": {
+                "type": "emoji",
+                "emoji": "🤼‍♂️"
+            },
+            "created__time": "2023-11-27T07:18:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "ac67e187-1d27-4563-b088-13b1833d2abb"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "ac67e187-1d27-4563-b088-13b1833d2abb"
+            },
+            "last_edited_time": "2024-01-01T00:47:00.000Z",
+            "title": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": "Things we do!",
+                        "link": null
+                    },
+                    "annotations": {
+                        "bold": false,
+                        "italic": false,
+                        "strikethrough": false,
+                        "underline": false,
+                        "code": false,
+                        "color": "default"
+                    },
+                    "plain_text": "Things we do!",
+                    "href": null
+                }
+            ],
+            "description": [],
+            "is_inline": false,
+            "properties": {
+                "Activity Type": {
+                    "id": "%3D%5C~C",
+                    "name": "Activity Type",
+                    "type": "select",
+                    "select": {
+                        "options": [
+                            {
+                                "id": "rWc<",
+                                "name": "Activity",
+                                "color": "red",
+                                "description": null
+                            },
+                            {
+                                "id": ":yjg",
+                                "name": "Accomodation",
+                                "color": "gray",
+                                "description": null
+                            },
+                            {
+                                "id": "IUHG",
+                                "name": "Food",
+                                "color": "purple",
+                                "description": null
+                            },
+                            {
+                                "id": "57cecbd0-6719-44ad-aeb2-d613ee5f7fca",
+                                "name": "Transport",
+                                "color": "green",
+                                "description": null
+                            }
+                        ]
+                    }
+                },
+                "Priority": {
+                    "id": "%3EurJ",
+                    "name": "Priority",
+                    "type": "number",
+                    "number": {
+                        "format": "number"
+                    }
+                },
+                "City": {
+                    "id": "CHzd",
+                    "name": "City",
+                    "type": "relation",
+                    "relation": {
+                        "database_id": "2fc9cb63-163b-40d5-b41d-c8f17fa4c9e2",
+                        "type": "dual_property",
+                        "dual_property": {
+                            "synced_property_name": "Things to do",
+                            "synced_property_id": "%40y%40%60"
+                        }
+                    }
+                },
+                "Book/Ticket Req?": {
+                    "id": "FJX%5B",
+                    "name": "Book/Ticket Req?",
+                    "type": "select",
+                    "select": {
+                        "options": [
+                            {
+                                "id": "_{Tm",
+                                "name": "Yes",
+                                "color": "green",
+                                "description": null
+                            },
+                            {
+                                "id": "UtI}",
+                                "name": "No",
+                                "color": "yellow",
+                                "description": null
+                            }
+                        ]
+                    }
+                },
+                "Days Closed": {
+                    "id": "LUI%3D",
+                    "name": "Days Closed",
+                    "type": "multi_select",
+                    "multi_select": {
+                        "options": [
+                            {
+                                "id": "mn<o",
+                                "name": "Monday",
+                                "color": "default",
+                                "description": null
+                            },
+                            {
+                                "id": "urwr",
+                                "name": "Tuesday",
+                                "color": "blue",
+                                "description": null
+                            },
+                            {
+                                "id": "q^hf",
+                                "name": "Wednesday",
+                                "color": "orange",
+                                "description": null
+                            },
+                            {
+                                "id": "na@Q",
+                                "name": "Thursday",
+                                "color": "gray",
+                                "description": null
+                            },
+                            {
+                                "id": "vvqB",
+                                "name": "Friday",
+                                "color": "yellow",
+                                "description": null
+                            },
+                            {
+                                "id": "PHgM",
+                                "name": "Saturday",
+                                "color": "pink",
+                                "description": null
+                            },
+                            {
+                                "id": "HT|j",
+                                "name": "Sunday",
+                                "color": "green",
+                                "description": null
+                            }
+                        ]
+                    }
+                },
+                "Date": {
+                    "id": "MqW%3D",
+                    "name": "Date",
+                    "type": "date",
+                    "date": {}
+                },
+                "Booked": {
+                    "id": "eZ%7B%5D",
+                    "name": "Booked",
+                    "type": "checkbox",
+                    "checkbox": {}
+                },
+                "Price": {
+                    "id": "f%5EZm",
+                    "name": "Price",
+                    "type": "number",
+                    "number": {
+                        "format": "dollar"
+                    }
+                },
+                "Day or Night": {
+                    "id": "t%7DoB",
+                    "name": "Day or Night",
+                    "type": "multi_select",
+                    "multi_select": {
+                        "options": [
+                            {
+                                "id": ";Gni",
+                                "name": "Day",
+                                "color": "pink",
+                                "description": null
+                            },
+                            {
+                                "id": "lJdk",
+                                "name": "Night",
+                                "color": "yellow",
+                                "description": null
+                            }
+                        ]
+                    }
+                },
+                "Booking Details": {
+                    "id": "y%5C%7CG",
+                    "name": "Booking Details",
+                    "type": "relation",
+                    "relation": {
+                        "database_id": "0314dbee-7e00-487a-ace6-286cb901611c",
+                        "type": "dual_property",
+                        "dual_property": {
+                            "synced_property_name": "Things to do",
+                            "synced_property_id": "w%3C%3A%7B"
+                        }
+                    }
+                },
+                "Country": {
+                    "id": "z%5BBt",
+                    "name": "Country",
+                    "type": "relation",
+                    "relation": {
+                        "database_id": "5270d10c-a5b0-4bbe-9e76-c69e7d2e64c4",
+                        "type": "single_property",
+                        "single_property": {}
+                    }
+                },
+                "Activity Name": {
+                    "id": "title",
+                    "name": "Activity Name",
+                    "type": "title",
+                    "title": {}
+                }
+            },
+            "parent": {
+                "type": "page_id",
+                "page_id": "39f32a6d-3337-4eae-97c2-9b6ae62c1341"
+            },
+            "url": "https://www.notion.so/07cc751185a049ff8473e5470ec595a8",
+            "public_url": null,
+            "archived": false
+        }
+    ],
+    "next_cursor": null,
+    "has_more": false,
+    "type": "page_or_database",
+    "page_or_database": {},
+    "request_id": "5f159c8f-0dc6-4ddb-8d42-5ab31a70ef2a"
+}

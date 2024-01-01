@@ -1,0 +1,42 @@
+
+https://www.google.com/search?client=firefox-b-d&q=colosseum
+https://www.google.com/search?client=firefox-b-d&sca_esv=594654577&sxsrf=AM9HkKkVfcmfvizHycl6hDp_FuvozR-WPw:1703981878286&q=Colosseum&si=ALGXSlYpXQdhAUyUPBgFovt5OWXePyg5U6QMQns5USbRkQnrA_7WMpGOURmYZ4VyAZF7QSD1LiG6RCzIZPLYDQz6ZJ8JlCYqYkDF6rW8X9ggXl7OA-qeseC5E9p9THSvTAaYGRg7PDF6ZotgZjYfY4Bbtck8RB9-ABFNt_vdpsXElSip53fA41lF3QJVJA2RskHRuj9-N7GbaMo0MI2E86R9VGdd2kclng%3D%3D&sa=X&ved=2ahUKEwiagbyUs7iDAxUmTGwGHYIyDcwQ6RN6BAgrEAE&biw=1536&bih=799&dpr=1.25
+
+https://g.co/kgs/NDU7FN2
+https://maps.app.goo.gl/FyJY4xfrmKVjDiL98
+
+AIzaSyDHlT4doSbP1o_gHmaqrbXTr-PkcpBSr34
+
+
+
+curl -X POST -d '{
+  "textQuery" : "Ballina Skatepark",
+  "maxResultCount": 1,
+  "locationBias": {
+    "circle": {
+      "center": {"latitude": -28.8662139, "longitude": 153.5688195},
+      "radius": 1.0
+    }
+  },
+}' \
+-H 'Content-Type: application/json' -H 'X-Goog-Api-Key: AIzaSyDHlT4doSbP1o_gHmaqrbXTr-PkcpBSr34' \
+-H 'X-Goog-FieldMask: places.displayName,places.formattedAddress,places.id' \
+'https://places.googleapis.com/v1/places:searchText'
+
+  # https://www.google.com/maps/place/Ballina+Skatepark/@-28.8662139,153.5688195,15z/data=!4m6!3m5!1s0x6b9080066e3e7ddb:0x8569d4b90fae7181!8m2!3d-28.8695206!4d153.5757364!16s%2Fg%2F1pzsld1g8?entry=ttu
+
+curl -X GET -H 'Content-Type: application/json' \
+-H "X-Goog-Api-Key: AIzaSyDHlT4doSbP1o_gHmaqrbXTr-PkcpBSr34" \
+-H "X-Goog-FieldMask: id,displayName" \
+https://places.googleapis.com/v1/places/ChIJ230-bgaAkGsRgXGuD7nUaYU
+'''
+
+
+
+https://www.notion.so/07cc751185a049ff8473e5470ec595a8?v=7bffb339ec2e41c584171cd5f8697320&pvs=4
+
+
+
+
+Success: 
+	{'object': 'list', 'results': [{'object': 'page', 'id': '0ea42cfa-ec40-463d-8384-9920d5c93e3d', 'created_time': '2023-11-27T08:20:00.000Z', 'last_edited_time': '2023-12-23T00:32:00.000Z', 'created_by': {'object': 'user', 'id': 'ac67e187-1d27-4563-b088-13b1833d2abb'}, 'last_edited_by': {'object': 'user', 'id': 'ac67e187-1d27-4563-b088-13b1833d2abb'}, 'cover': None, 'icon': None, 'parent': {'type': 'database_id', 'database_id': '2fc9cb63-163b-40d5-b41d-c8f17fa4c9e2'}, 'archived': False, 'properties': {'Things to do': {'id': '%40y%40%60', 'type': 'relation', 'relation': [{'id': 'ba052dcf-bd3d-4bb5-b907-c412fa4e5277'}, {'id': 'd2f5d5b1-bf12-4d95-b213-ed3b6266344c'}, {'id': '363d8325-6145-45d1-8604-60d1be9b2c82'}, {'id': '12f23071-1610-4872-a2ba-9c22be5f79ea'}, {'id': '95284832-e010-412e-8c4a-635cd23fc3bb'}, {'id': '7c66a4a0-ecc0-475c-ab33-9fd0f4f38c16'}, {'id': 'f3ec05b8-3397-48d6-8cdb-6569842ea1af'}, {'id': 'ad442734-d876-4b6f-9c26-a39cf18c3bfc'}, {'id': 'dde76147-30f5-4f60-b937-1cc98a9f80d0'}, {'id': '20b484b1-9bd9-48f7-9874-5e94be730519'}, {'id': '90405be9-517e-4eff-bb61-6236a5e2d58f'}, {'id': '54cb2c23-2c21-49fd-b169-43b078a907e6'}, {'id': 'a1ef870e-52f3-4c98-81c0-488484d9f05f'}], 'has_more': False}, 'Dates': {'id': 'LiaU', 'type': 'date', 'date': {'start': '2025-09-21', 'end': '2025-09-28', 'time_zone': None}}, 'Countries': {'id': 'gYdu', 'type': 'relation', 'relation': [{'id': '7608e6a7-e53e-42ca-b4a9-bf167cbf9793'}], 'has_more': False}, 'Name': {'id': 'title', 'type': 'title', 'title': [{'type': 'text', 'text': {'content': 'Rome', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}, 'plain_text': 'Rome', 'href': None}]}}, 'url': 'https://www.notion.so/Rome-0ea42cfaec40463d83849920d5c93e3d', 'public_url': None}, {'object': 'page', 'id': 'a1ef870e-52f3-4c98-81c0-488484d9f05f', 'created_time': '2023-12-30T04:23:00.000Z', 'last_edited_time': '2023-12-30T04:24:00.000Z', 'created_by': {'object': 'user', 'id': 'ac67e187-1d27-4563-b088-13b1833d2abb'}, 'last_edited_by': {'object': 'user', 'id': 'ac67e187-1d27-4563-b088-13b1833d2abb'}, 'cover': None, 'icon': None, 'parent': {'type': 'database_id', 'database_id': '07cc7511-85a0-49ff-8473-e5470ec595a8'}, 'archived': False, 'properties': {'Activity Type': {'id': '%3D%5C~C', 'type': 'select', 'select': {'id': ':yjg', 'name': 'Accomodation', 'color': 'gray'}}, 'Priority': {'id': '%3EurJ', 'type': 'number', 'number': 6}, 'City': {'id': 'CHzd', 'type': 'relation', 'relation': [{'id': '0ea42cfa-ec40-463d-8384-9920d5c93e3d'}], 'has_more': False}, 'Book/Ticket Req?': {'id': 'FJX%5B', 'type': 'select', 'select': {'id': '_{Tm', 'name': 'Yes', 'color': 'green'}}, 'Days Closed': {'id': 'LUI%3D', 'type': 'multi_select', 'multi_select': []}, 'Date': {'id': 'MqW%3D', 'type': 'date', 'date': None}, 'Booked': {'id': 'eZ%7B%5D', 'type': 'checkbox', 'checkbox': False}, 'Price': {'id': 'f%5EZm', 'type': 'number', 'number': 50}, 'Day or Night': {'id': 't%7DoB', 'type': 'multi_select', 'multi_select': [{'id': 'lJdk', 'name': 'Night', 'color': 'yellow'}]}, 'Booking Details': {'id': 'y%5C%7CG', 'type': 'relation', 'relation': [], 'has_more': False}, 'Country': {'id': 'z%5BBt', 'type': 'relation', 'relation': [{'id': '7608e6a7-e53e-42ca-b4a9-bf167cbf9793'}], 'has_more': False}, 'Activity Name': {'id': 'title', 'type': 'title', 'title': [{'type': 'text', 'text': {'content': 'Hotel - ', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}, 'plain_text': 'Hotel - ', 'href': None}, {'type': 'text', 'text': {'content': 'Romeo. Luminoso appartamento al centro di Roma', 'link': None}, 'annotations': {'bold': True, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}, 'plain_text': 'Romeo. Luminoso appartamento al centro di Roma', 'href': None}]}}, 'url': 'https://www.notion.so/Hotel-Romeo-Luminoso-appartamento-al-centro-di-Roma-a1ef870e52f34c9881c0488484d9f05f', 'public_url': None}], 'next_cursor': None, 'has_more': False, 'type': 'page_or_database', 'page_or_database': {}, 'request_id': '971e8fb2-3602-4bc2-b7d0-161730df074a'}
