@@ -1,0 +1,122 @@
+[
+    {
+        "object": "page",
+        "id": "7608e6a7-e53e-42ca-b4a9-bf167cbf9793",
+        "created_time": "2023-11-27T08:20:00.000Z",
+        "last_edited_time": "2023-12-14T10:43:00.000Z",
+        "created_by": {
+            "object": "user",
+            "id": "ac67e187-1d27-4563-b088-13b1833d2abb"
+        },
+        "last_edited_by": {
+            "object": "user",
+            "id": "ac67e187-1d27-4563-b088-13b1833d2abb"
+        },
+        "cover": null,
+        "icon": {
+            "type": "emoji",
+            "emoji": "🇮🇹"
+        },
+        "parent": {
+            "type": "database_id",
+            "database_id": "5270d10c-a5b0-4bbe-9e76-c69e7d2e64c4"
+        },
+        "archived": false,
+        "properties": {
+            "Seasonality": {
+                "id": "%5Ca%3A%5D",
+                "type": "multi_select",
+                "multi_select": [
+                    {
+                        "id": ";sot",
+                        "name": "June/July/August",
+                        "color": "orange"
+                    }
+                ]
+            },
+            "Cities": {
+                "id": "_JYy",
+                "type": "relation",
+                "relation": [
+                    {
+                        "id": "0ea42cfa-ec40-463d-8384-9920d5c93e3d"
+                    },
+                    {
+                        "id": "c385af72-d44d-4c38-9040-428229521107"
+                    },
+                    {
+                        "id": "5957ac37-d5fe-4719-ac7a-bf9b3544a761"
+                    },
+                    {
+                        "id": "e487c365-572a-4711-aab0-5a05a75cb1f5"
+                    },
+                    {
+                        "id": "ac106299-bb1f-449c-835b-d2a73632f2f9"
+                    },
+                    {
+                        "id": "d4564b92-7fd9-4169-9f5a-fda91f046401"
+                    },
+                    {
+                        "id": "3f1b672e-c2be-4036-9289-7aad59a617f8"
+                    },
+                    {
+                        "id": "905c98d9-3c87-4432-8a24-57f37b6c0ddf"
+                    },
+                    {
+                        "id": "44e54d66-7951-4948-a4c9-302e67a0a41f"
+                    },
+                    {
+                        "id": "17c55f90-b98d-4bf5-b51c-6320da50ed42"
+                    },
+                    {
+                        "id": "289ad1a1-45bd-4fae-a3b1-e3c42f82c843"
+                    },
+                    {
+                        "id": "f38cc19f-d78f-4784-961c-971781e55968"
+                    },
+                    {
+                        "id": "a36bb701-aedf-4181-bb99-2dfbc87b91c6"
+                    },
+                    {
+                        "id": "660c5f36-61b6-404d-9dc2-a775a2b2cdde"
+                    },
+                    {
+                        "id": "066998df-ebc5-4987-92f6-b80526a865f1"
+                    },
+                    {
+                        "id": "0b48e2d5-e2ea-445d-8263-883994efa6d4"
+                    },
+                    {
+                        "id": "5022869d-903d-40e6-8ba6-34cf7a9cb3c6"
+                    }
+                ],
+                "has_more": false
+            },
+            "Name": {
+                "id": "title",
+                "type": "title",
+                "title": [
+                    {
+                        "type": "text",
+                        "text": {
+                            "content": "Italy",
+                            "link": null
+                        },
+                        "annotations": {
+                            "bold": false,
+                            "italic": false,
+                            "strikethrough": false,
+                            "underline": false,
+                            "code": false,
+                            "color": "default"
+                        },
+                        "plain_text": "Italy",
+                        "href": null
+                    }
+                ]
+            }
+        },
+        "url": "https://www.notion.so/Italy-7608e6a7e53e42cab4a9bf167cbf9793",
+        "public_url": null
+    }
+]
