@@ -1,6 +1,10 @@
 import requests
 import json
 import re
+import tkinter as tk
+from tkinter import messagebox
+
+url_entry = None
 
 # Replace with your actual Notion API key
 notion_api_key = 'secret_N6UR0t4kMT7gJTqPKRqDM9OA323eegULmiMBw7ltqBc'
@@ -399,10 +403,18 @@ def add_page_to_notion(page_details):
     else:
         print("Failed to create page:", response.status_code, response.text)
 
+def run_script():
+    google_maps_url = url_entry.get()
+    if google_maps_url:
+        main(google_maps_url)
+        messagebox.showinfo("Success", "The script has been executed successfully.")
+    else:
+        messagebox.showwarning("Warning", "Please enter a Google Maps URL.")
+
+
 # Main script flow
-def main():
-    # Example Google Maps URL
-    google_maps_url = input("Please enter a Google Maps URL: ")
+def main(google_maps_url):
+    print("URL entered:", google_maps_url)
 
     # Extract details from Google Maps
     place_name, latitude, longitude, regularOpeningHours, websiteUri, primary_type = extract_details_from_google_maps(google_maps_url)
@@ -443,4 +455,21 @@ def main():
     print("Process completed successfully.")
 
 if __name__ == "__main__":
-    main()
+    # GUI Setup
+    root = tk.Tk()
+    root.title("Google Maps to Notion")
+
+    # URL Entry
+    tk.Label(root, text="Enter Google Maps URL:").pack()
+    url_entry = tk.Entry(root, width=50)  # Initialize here
+    url_entry.pack()
+
+    # Run Button
+    run_button = tk.Button(root, text="Run Script", command=run_script)
+    run_button.pack()
+
+    # Start the GUI event loop
+    root.mainloop()
+
+# Start the GUI event loop
+root.mainloop()
