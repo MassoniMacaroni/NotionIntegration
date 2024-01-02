@@ -296,10 +296,9 @@ def analyze_opening_hours(data):
     suitable_for_night = False
     open_24_7 = False
 
-    if data is None or 'open24Hours' in data and data['open24Hours']:
+    if data is None or ('open24Hours' in data and data['open24Hours']):
         open_24_7 = True
     else:
-        # Check each period for each day
         for day in range(7):  # 0 to 6 for each day of the week
             periods_for_day = [period for period in data.get('periods', []) if period['open']['day'] == day]
 
@@ -310,11 +309,12 @@ def analyze_opening_hours(data):
             for period in periods_for_day:
                 open_hour = period['open']['hour']
                 close_hour = period.get('close', {}).get('hour', 24)  # Default to 24 if closing time is not specified
+                close_day = period.get('close', {}).get('day', day)
 
                 # Check for day and night suitability
                 if open_hour < 12:
                     suitable_for_day = True
-                if close_hour >= 21 or close_hour == 0:  # Midnight closing is represented as 0
+                if close_hour >= 21 or (close_day != day and close_hour < 6):  # Closing past midnight
                     suitable_for_night = True
 
     # Determine time of day suitability
@@ -330,6 +330,7 @@ def analyze_opening_hours(data):
         time_of_day = []
 
     return closed_days, time_of_day
+
 
 
 
