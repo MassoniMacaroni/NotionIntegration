@@ -288,18 +288,23 @@ def create_cities_page_details(city_name, country_page_id):
         # Optional: Add icon, cover, and children (blocks) as needed
     }
     return page_details
-
 def analyze_opening_hours(data):
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     closed_days = []
-    suitable_for_day = False
-    suitable_for_night = False
     open_24_7 = False
 
-    if data is None or ('open24Hours' in data and data['open24Hours']):
+    # Check for 24/7 opening
+    if data is None or ('open24Hours' in data and data['open24Hours']) or len(data.get('periods', [])) == 1 and data['periods'][0]['open']['day'] == 0 and data['periods'][0]['open']['hour'] == 0:
         open_24_7 = True
+
+    if open_24_7:
+        # If open 24/7, no closed days and suitable for both day and night
+        time_of_day = ["Day", "Night"]
     else:
-        for day in range(7):  # 0 to 6 for each day of the week
+        suitable_for_day = False
+        suitable_for_night = False
+
+        for day in range(7):  # Check each day of the week
             periods_for_day = [period for period in data.get('periods', []) if period['open']['day'] == day]
 
             if not periods_for_day:  # If no periods, the day is closed
@@ -317,19 +322,18 @@ def analyze_opening_hours(data):
                 if close_hour >= 21 or (close_day != day and close_hour < 6):  # Closing past midnight
                     suitable_for_night = True
 
-    # Determine time of day suitability
-    if open_24_7:
-        time_of_day = ["Day", "Night"]
-    elif suitable_for_day and suitable_for_night:
-        time_of_day = ["Day", "Night"]
-    elif suitable_for_day:
-        time_of_day = ["Day"]
-    elif suitable_for_night:
-        time_of_day = ["Night"]
-    else:
-        time_of_day = []
+        # Determine time of day suitability
+        if suitable_for_day and suitable_for_night:
+            time_of_day = ["Day", "Night"]
+        elif suitable_for_day:
+            time_of_day = ["Day"]
+        elif suitable_for_night:
+            time_of_day = ["Night"]
+        else:
+            time_of_day = []
 
     return closed_days, time_of_day
+
 
 
 
