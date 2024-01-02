@@ -46,7 +46,9 @@ def extract_details_from_google_maps(google_maps_url):
 
     # Make the POST request (Uncomment the lines below to actually send the request)
     response = requests.post(url, json=payload, headers=headers)
-
+    regularOpeningHours = None
+    websiteUri = None
+    primary_type = None
 
     # Check the response status code and parse the response
     if response.status_code == 200:
