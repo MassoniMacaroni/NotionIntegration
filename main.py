@@ -3,6 +3,7 @@ import json
 import re
 import tkinter as tk
 from tkinter import messagebox
+import threading
 
 url_entry = None
 
@@ -444,63 +445,81 @@ def add_page_to_notion(page_details):
     else:
         print("Failed to create page:", response.status_code, response.text)
 
-def run_script():
+
+def run_script(status_label):
     google_maps_url = url_entry.get()
     if google_maps_url:
-        main(google_maps_url)
+        status_label.config(text="Running script...")
+        main(google_maps_url, status_label)
         messagebox.showinfo("Success", "The script has been executed successfully.")
-        url_entry.delete(0, tk.END)  # Clear the entry box
+        status_label.config(text="Ready.")
     else:
         messagebox.showwarning("Warning", "Please enter a Google Maps URL.")
+        status_label.config(text="Please enter a valid URL.")
 
-
+def run_script_threaded(status_label):
+    google_maps_url = url_entry.get()
+    if google_maps_url:
+        status_label.config(text="Running script...")
+        # Start a new thread for the main task
+        threading.Thread(target=main, args=(google_maps_url, status_label), daemon=True).start()
+    else:
+        messagebox.showwarning("Warning", "Please enter a Google Maps URL.")
+        status_label.config(text="Please enter a valid URL.")
 
 # Main script flow
-def main(google_maps_url):
-    print("URL entered:", google_maps_url)
+def main(google_maps_url, status_label):
+    try:
+        print("URL entered:", google_maps_url)
+        status_label.config(text="Extracting details from Google Maps...")
+        # Extract details from Google Maps
+        place_name, latitude, longitude, regularOpeningHours, websiteUri, primary_type = extract_details_from_google_maps(google_maps_url)
+        category = categorise_primary_type(primary_type)
 
-    # Extract details from Google Maps
-    place_name, latitude, longitude, regularOpeningHours, websiteUri, primary_type = extract_details_from_google_maps(google_maps_url)
-    category = categorise_primary_type(primary_type)
+        print("Latitude:", latitude)
+        print("Longitude:", longitude)
+        country_name, localities = get_country_from_lat_long(latitude, longitude)
 
-    print("Latitude:", latitude)
-    print("Longitude:", longitude)
-    country_name, localities = get_country_from_lat_long(latitude, longitude)
+        countries_database = '5270d10c-a5b0-4bbe-9e76-c69e7d2e64c4'
+        cities_database = '2fc9cb63-163b-40d5-b41d-c8f17fa4c9e2'
 
-    countries_database = '5270d10c-a5b0-4bbe-9e76-c69e7d2e64c4'
-    cities_database = '2fc9cb63-163b-40d5-b41d-c8f17fa4c9e2'
-
-    # Search for the country in Notion, create if not found
-    country_page_id = search_page_in_notion(country_name, countries_database)
-    if not country_page_id:
-        print("Creating new Country Page:", country_name)
-        page_details = create_countries_page_details(country_name)
-        country_page_id = add_page_to_notion(page_details)
-
-    # Check and handle localities (cities)
-    locality_page_id = None
-    for locality in localities:
-        locality_page_id = search_page_in_notion(locality, cities_database)
-        if locality_page_id:
-            break
-
-    if not locality_page_id and localities:
-        print("Creating new City Page:", localities[0])
+        # Search for the country in Notion, create if not found
         country_page_id = search_page_in_notion(country_name, countries_database)
-        page_details = create_cities_page_details(localities[0], country_page_id)
-        locality_page_id = add_page_to_notion(page_details)
+        if not country_page_id:
+            print("Creating new Country Page:", country_name)
+            page_details = create_countries_page_details(country_name)
+            country_page_id = add_page_to_notion(page_details)
 
-    closed_days, time_of_day = analyze_opening_hours(regularOpeningHours)
+        # Check and handle localities (cities)
+        locality_page_id = None
+        for locality in localities:
+            locality_page_id = search_page_in_notion(locality, cities_database)
+            if locality_page_id:
+                break
 
-    # Prepare and add the thingsToDo page
-    if country_page_id and locality_page_id:
-        page_details = create_thingsToDo_page_details(place_name, latitude, longitude, country_page_id, locality_page_id, time_of_day, closed_days, websiteUri, category)
-        add_page_to_notion(page_details)
-    else:
-        print("Failed to find or create necessary pages in Notion.")
+        if not locality_page_id and localities:
+            print("Creating new City Page:", localities[0])
+            country_page_id = search_page_in_notion(country_name, countries_database)
+            page_details = create_cities_page_details(localities[0], country_page_id)
+            locality_page_id = add_page_to_notion(page_details)
 
-    print("Process completed successfully.")
+        closed_days, time_of_day = analyze_opening_hours(regularOpeningHours)
 
+        # Prepare and add the thingsToDo page
+        if country_page_id and locality_page_id:
+            page_details = create_thingsToDo_page_details(place_name, latitude, longitude, country_page_id, locality_page_id, time_of_day, closed_days, websiteUri, category)
+            add_page_to_notion(page_details)
+        else:
+            print("Failed to find or create necessary pages in Notion.")
+
+        status_label.config(text="Process completed successfully.")
+        messagebox.showinfo("Success", "The script has been executed successfully.")
+        url_entry.delete(0, tk.END)  # Clear the entry box
+        print("Process completed successfully.")
+    except Exception as e:
+            messagebox.showerror("Error", str(e))
+            status_label.config(text="An error occurred.")
+    
 if __name__ == "__main__":
     # GUI Setup
     root = tk.Tk()
@@ -508,15 +527,16 @@ if __name__ == "__main__":
 
     # URL Entry
     tk.Label(root, text="Enter Google Maps URL:").pack()
-    url_entry = tk.Entry(root, width=50)  # Initialize here
+    url_entry = tk.Entry(root, width=50)
     url_entry.pack()
 
     # Run Button
-    run_button = tk.Button(root, text="Run Script", command=run_script)
+    run_button = tk.Button(root, text="Run Script", command=lambda: run_script_threaded(status_label))
     run_button.pack()
+
+    # Status Label
+    status_label = tk.Label(root, text="Ready.", fg="green")
+    status_label.pack()
 
     # Start the GUI event loop
     root.mainloop()
-
-# Start the GUI event loop
-root.mainloop()
