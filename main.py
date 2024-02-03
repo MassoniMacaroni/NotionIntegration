@@ -1,4 +1,6 @@
 import requests
+from dotenv import load_dotenv
+import os
 import json
 import re
 import tkinter as tk
@@ -7,9 +9,12 @@ import threading
 
 url_entry = None
 
-# Replace with your actual Notion API key
-notion_api_key = 'secret_N6UR0t4kMT7gJTqPKRqDM9OA323eegULmiMBw7ltqBc'
-gmaps_api_key = 'AIzaSyDHlT4doSbP1o_gHmaqrbXTr-PkcpBSr34'
+# Load environment variables from .env file
+load_dotenv()
+
+# Access your API keys
+notion_api_key = os.getenv('NOTION_API_KEY')
+gmaps_api_key = os.getenv('GMAPS_API_KEY')
 
 # Function to extract details from a Google Maps link
 def extract_details_from_google_maps(google_maps_url):
