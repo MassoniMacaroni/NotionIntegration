@@ -13,3 +13,7 @@ Flexible Data Handling: Supports handling of various data types and structures f
 * Data Extraction: The application uses the Google Maps API to extract detailed information from the provided URL, including the place's name, geographic coordinates, and more.
 * Notion Update: Utilizing the Notion API, the application then creates or updates a page within a specified Notion database with the extracted information.
 * User Feedback: Through its GUI, the application provides feedback on the operation's success or failure, including any errors encountered.
+
+![Python App with google](readMeAssets/pyAppOnGMaps.png)
+![Console output](readMeAssets/ConsoleOutput.png)
+![Item added to Notion](readMeAssets/ItemAddedToDB.png)
