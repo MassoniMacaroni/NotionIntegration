@@ -1,7 +1,16 @@
+# This was separated just for testing but is no longer in use as I have not updated recently.
+import os
+from dotenv import load_dotenv
 import requests
 import json
 
-notion_api_key = 'secret_N6UR0t4kMT7gJTqPKRqDM9OA323eegULmiMBw7ltqBc'
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access API keys
+notion_api_key = os.getenv('NOTION_API_KEY')
+gmaps_api_key = os.getenv('GMAPS_API_KEY')
 
 database_id = "07cc7511-85a0-49ff-8473-e5470ec595a8"
   

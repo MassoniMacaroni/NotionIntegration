@@ -1,5 +1,16 @@
+# This was separated just for testing but is no longer in use as I have not updated recently.
+import os
 import re
+from dotenv import load_dotenv
 import requests
+
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access API keys
+notion_api_key = os.getenv('NOTION_API_KEY')
+gmaps_api_key = os.getenv('GMAPS_API_KEY')
 
 # Prompt the user for a Google Maps URL
 google_maps_url = "https://www.google.com/maps/place/Mama+Eat/@40.8366911,14.2131827,15z/data=!4m6!3m5!1s0x133b09205fc705bd:0xb27f043e82c18803!8m2!3d40.8366911!4d14.2131827!16s%2Fg%2F1tqd2_zv?entry=ttu"
@@ -34,7 +45,7 @@ payload = {
 }
 headers = {
     'Content-Type': 'application/json',
-    'X-Goog-Api-Key': 'AIzaSyDHlT4doSbP1o_gHmaqrbXTr-PkcpBSr34',  # Replace with your actual API key
+    'X-Goog-Api-Key': gmaps_api_key,  
     'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.types,places.primaryType,places.websiteUri,places.nationalPhoneNumber,places.location,places.internationalPhoneNumber,places.nationalPhoneNumber,places.priceLevel,places.regularOpeningHours'
 }
 
@@ -237,7 +248,6 @@ print("Time of Day Suitability:", time_of_day)
 
 print(categorize_primary_type(primary_type))
 
-# Example usage
-api_key = 'AIzaSyDHlT4doSbP1o_gHmaqrbXTr-PkcpBSr34'  # Replace with your Google Maps API key
-country, localities = get_location_details_from_lat_long(latitude, longitude, api_key)
+
+country, localities = get_location_details_from_lat_long(latitude, longitude, gmaps_api_key)
 print(f"Country: {country}, Localities: {localities}")

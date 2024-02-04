@@ -12,7 +12,7 @@ url_entry = None
 # Load environment variables from .env file
 load_dotenv()
 
-# Access your API keys
+# Access API keys
 notion_api_key = os.getenv('NOTION_API_KEY')
 gmaps_api_key = os.getenv('GMAPS_API_KEY')
 
@@ -50,7 +50,7 @@ def extract_details_from_google_maps(google_maps_url):
         'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.id,places.primaryType,places.websiteUri,places.location,places.regularOpeningHours'
     }
 
-    # Make the POST request (Uncomment the lines below to actually send the request)
+    # Make the POST request 
     response = requests.post(url, json=payload, headers=headers)
     regularOpeningHours = None
     websiteUri = None
@@ -131,7 +131,7 @@ def search_page_in_notion(search_query, database_id):
         'Content-Type': 'application/json'
     }
 
-    # Example payload for Notion API POST request
+    #ayload for Notion API POST request
     notion_payload = {
         "query": search_query,
         "filter": {
@@ -180,7 +180,7 @@ def search_localities_in_notion(localities, database_id):
     for search_query in localities:
         print("Searching for:", search_query)
 
-        # Example payload for Notion API POST request
+        # payload for Notion API POST request
         notion_payload = {
             "query": search_query,
             "filter": {
