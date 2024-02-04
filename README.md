@@ -10,10 +10,12 @@ Flexible Data Handling: Supports handling of various data types and structures f
 
 ### How It Works
 * Input Google Maps URL: Users input a Google Maps URL of the location they wish to add to their Notion database.
+    ![Python App with google](readMeAssets/pyAppOnGMaps.png)
 * Data Extraction: The application uses the Google Maps API to extract detailed information from the provided URL, including the place's name, geographic coordinates, and more.
+    ![Console output](readMeAssets/ConsoleOutput.png)
 * Notion Update: Utilizing the Notion API, the application then creates or updates a page within a specified Notion database with the extracted information.
+    ![Item added to Notion](readMeAssets/ItemAddedToDB.png)
 * User Feedback: Through its GUI, the application provides feedback on the operation's success or failure, including any errors encountered.
 
-![Python App with google](readMeAssets/pyAppOnGMaps.png)
-![Console output](readMeAssets/ConsoleOutput.png)
-![Item added to Notion](readMeAssets/ItemAddedToDB.png)
+
+
